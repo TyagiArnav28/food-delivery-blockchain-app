@@ -22,6 +22,7 @@ public class CardLayoutPanel extends JPanel {
     private DriverScreen driverScreen;
     private HomeScreen homeScreen;
     private TrackOrderScreen trackOrderScreen;
+    private RegistrationScreen registrationScreen;
     private List<CartItem> cartItems;
 
     // --- OUR NEW BLOCKCHAIN LOGIC ---
@@ -41,6 +42,7 @@ public class CardLayoutPanel extends JPanel {
      // --- INITIALIZE THE BLOCKCHAIN ---
      // Setup Bouncy castle as a Security Provider
      Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+     setupInitialUsers();
 
      // Create the wallets for our participants
      customerWallet = new Wallet();
@@ -53,6 +55,10 @@ public class CardLayoutPanel extends JPanel {
      System.out.println("Genesis Block created. Blockchain is ready.");
      // ---------------------------------
         setLayout(layout);
+     // --- ADD REGISTRATION SCREEN ---
+        registrationScreen = new RegistrationScreen(navigator, this); // <-- ADD THIS
+        add(registrationScreen, "register");                   // <-- ADD THIS
+        // -----------------------------
 
         LoginScreen login = new LoginScreen(navigator, this);
         homeScreen = new HomeScreen(navigator);
@@ -124,5 +130,16 @@ public class CardLayoutPanel extends JPanel {
     public static void addBlock(Block newBlock) {
         newBlock.mineBlock(difficulty);
         blockchain.add(newBlock);
+    }
+ // --- NEW: Populates the database with our default users ---
+    private void setupInitialUsers() {
+        // Try to register our three main roles.
+        // The DatabaseManager will safely hash the passwords.
+        // If they already exist, registerUser() will just fail silently, which is fine.
+        DatabaseManager.registerUser("customer", "pass123", "customer");
+        DatabaseManager.registerUser("restaurant", "pass123", "restaurant");
+        DatabaseManager.registerUser("driver", "pass123", "driver");
+
+        System.out.println("Default users (customer, restaurant, driver) are ready.");
     }
 }

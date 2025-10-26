@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Food Delivery App 🍴");
+            JFrame frame = new JFrame("BlockDrop:Food Delivery App 🍴");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(700, 600);
             frame.setLocationRelativeTo(null);
@@ -23,6 +23,7 @@ public class Main {
             };
 
             CardLayoutPanel cardPanel = new CardLayoutPanel(navigator);
+            cardPanel.show("register");
             cardPanelHolder[0] = cardPanel;
 
             frame.add(cardPanel, BorderLayout.CENTER);
